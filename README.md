@@ -227,8 +227,8 @@ The model achieved the following metrics on the test set:
 * Provides interpretable results with feature importance.
 
 ### Weaknesses:
-    * Struggles with rare categories due to limited data.
-    * May require additional preprocessing for text fields to improve performance.
+* Struggles with rare categories due to limited data.
+* May require additional preprocessing for text fields to improve performance.
 
 ---
 
