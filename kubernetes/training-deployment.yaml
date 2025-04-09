@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fever-training-job
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: fever-training
+    spec:
+      containers:
+      - name: fever-training-container
+        image: carlosrosado/training-fever-image:latest
+        command: ["python", "/app/src/model/train_mlflow.py"]
+        env:
+        - name: LOCAL_DATA_PATH
+          value: "/app/data_files"
+        - name: MODEL_OUTPUT_PATH
+          value: "/app/models/model.pkl"
+        - name: MLFLOW_TRACKING_URI
+          value: "http://mlflow:5000"
+        - name: DATA_URL
+          value: "https://drive.google.com/uc?id=1Zf0Kdby-FHLdNXatMP0AD2nY0h-cjas3"
+      restartPolicy: Never

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fever-serving-deployment
+  labels:
+    app: fever-serving
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fever-serving
+  template:
+    metadata:
+      labels:
+        app: fever-serving
+    spec:
+      containers:
+      - name: fever-serving-container
+        image: carlosrosado/serving-fever-image:latest
+        ports:
+        - containerPort: 8002 
+        - containerPort: 9092 
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: "http://mlflow:5000" 
+        - name: MODEL_NAME
+          value: "Fever_Random_Forest" 
+        - name: DATA_URL
+          value: "https://drive.google.com/uc?id=1Zf0Kdby-FHLdNXatMP0AD2nY0h-cjas3"
+        envFrom:
+        - configMapRef:
+            name: mlflow-config
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9092
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9092
+          initialDelaySeconds: 30
+          periodSeconds: 20

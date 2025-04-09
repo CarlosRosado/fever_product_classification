@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Fever Product Classification API
+  description: API for predicting product classifications using the Fever Random Forest model.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8002
+    description: Local server
+paths:
+  /:
+    get:
+      summary: Root Endpoint
+      description: Returns a welcome message for the API.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Welcome to the Fever Product Classification API
+  /predict:
+    post:
+      summary: Predict Product Classification
+      description: Predicts the product classification based on the provided features.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                features:
+                  $ref: '#/components/schemas/Features'
+      responses:
+        '200':
+          description: Successful prediction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  model:
+                    type: string
+                    example: Fever_Random_Forest
+                  version:
+                    type: string
+                    example: latest
+                  prediction:
+                    type: array
+                    items:
+                      type: number
+                      example: 1
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /metrics:
+    get:
+      summary: Service Metrics
+      description: Returns Prometheus metrics for the service.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            text/plain:
+              schema:
+                type: string
+  /specifications:
+    get:
+      summary: OpenAPI Specifications
+      description: Returns the OpenAPI specifications for the API.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Specifications not found
+components:
+  schemas:
+    Features:
+      type: object
+      properties:
+        also_buy_count:
+          type: integer
+          description: Count of also_buy items
+          example: 5
+        also_view_count:
+          type: integer
+          description: Count of also_view items
+          example: 10
+        asin:
+          type: string
+          description: ASIN of the product
+          example: B001234567
+        brand:
+          type: string
+          description: Brand of the product
+          example: ExampleBrand
+        category:
+          type: string
+          description: Category of the product
+          example: Electronics
+        description:
+          type: string
+          description: Description of the product
+          example: 10
+        feature:
+          type: string
+          description: Feature of the product
+          example: 11
+        image_count:
+          type: integer
+          description: Count of images
+          example: 3
+        price:
+          type: number
+          format: float
+          description: Price of the product
+          example: 19.99
+        title:
+          type: string
+          description: Title of the product
+          example: 14
