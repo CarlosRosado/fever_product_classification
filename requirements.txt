@@ -1,0 +1,16 @@
+scikit-learn
+pandas
+numpy
+gunicorn
+requests
+pytest
+gdown
+nltk
+python-dotenv
+imbalanced-learn
+mlflow
+fastapi
+uvicorn
+seaborn
+prometheus_client
+httpx
